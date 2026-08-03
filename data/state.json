@@ -1,8 +1,8 @@
 {
   "teams": {
     "Red": {
-      "pop": 2,
-      "points": 2,
+      "pop": 0,
+      "points": 0,
       "visitedPages": [
         "object_example_1",
         "object_example_2"
@@ -14,7 +14,7 @@
       "visitedPages": []
     },
     "Yellow": {
-      "pop": 1,
+      "pop": 0,
       "points": 0,
       "visitedPages": []
     }
