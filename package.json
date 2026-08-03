@@ -1,0 +1,13 @@
+{
+  "name": "4040-discovery-trail",
+  "version": "1.0.0",
+  "description": "Discovery Trail Web App for the Media Lab's 40th Anniversary",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

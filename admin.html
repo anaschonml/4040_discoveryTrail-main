@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Discovery Trail — Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <h1>Discovery Trail — Admin</h1>
+            <a href="/index.html"><button class="navbutton">Back to app</button></a>
+        </header>
+        <main class="admin-main">
+            <p class="admin-updated" id="last-updated"></p>
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="teams-table">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>Players</th>
+                            <th>Points</th>
+                            <th>Pages accessed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teams-body"></tbody>
+                </table>
+            </div>
+        </main>
+        <script src="js/admin.js"></script>
+    </body>
+</html>

@@ -1,0 +1,209 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Varela Round', sans-serif;
+  background: #f5f5f0;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  flex: 1 1 auto;
+}
+
+main {
+  padding: 1.25rem;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.activity-description {
+  margin-top: 0;
+  color: #444;
+}
+
+.teamSelect {
+  margin-top: 1.5rem;
+}
+
+.teams {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.team-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 0.5rem;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+
+.team-button:active {
+  transform: scale(0.98);
+}
+
+.team-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.team-red { border-color: #c0392b; }
+.team-orange { border-color: #e67e22; }
+.team-yellow { border-color: #f1c40f; }
+
+.team-button-name {
+  font-weight: bold;
+}
+
+.team-button-pop {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.team-status {
+  display: none;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.9rem;
+  align-items: center;
+}
+
+.team-status-visible {
+  display: flex;
+}
+
+.team-name {
+  font-weight: bold;
+}
+
+.team-points {
+  color: #2c3e50;
+}
+
+.team-pop {
+  color: #666;
+}
+
+.team-new-point {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.joined-message {
+  padding: 1.25rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  border: 2px solid #ddd;
+}
+
+.joined-message p {
+  margin: 0.5rem 0;
+}
+
+.joined-hint {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #c0392b;
+}
+
+.navbutton {
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.admin-main {
+  max-width: 48rem;
+}
+
+.admin-updated {
+  margin-top: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 0.5rem;
+  border: 2px solid #ddd;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+  background: #fafafa;
+  font-weight: bold;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-team-name {
+  font-weight: bold;
+}
+
+.admin-pages {
+  font-family: monospace;
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.team-row.team-red .admin-team-name { color: #c0392b; }
+.team-row.team-orange .admin-team-name { color: #e67e22; }
+.team-row.team-yellow .admin-team-name { color: #b7950b; }
+
+@media (min-width: 480px) {
+  .teams {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .team-button {
+    flex: 1 1 calc(50% - 0.375rem);
+    min-width: 10rem;
+  }
+}
