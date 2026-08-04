@@ -1,22 +1,26 @@
 {
-  "teams": {
-    "Red": {
+  "teams":{
+    "LROLZ": {
       "pop": 0,
       "points": 0,
-      "visitedPages": []
+      "visitedPages": [
+
+      ],
+      "members": [
+
+      ]
     },
-    "Orange": {
-      "pop": ,
-      "points": 0,
-      "visitedPages": []
-    },
-    "Yellow": {
+    "ZJGXI": {
       "pop": 0,
       "points": 0,
-      "visitedPages": []
+      "visitedPages": [
+
+      ],
+      "members": [
+      ]
     }
   },
   "players": {
-
+   
   }
 }
