@@ -3,11 +3,10 @@
     "Red": {
       "pop": 0,
       "points": 0,
-      "visitedPages": [
-      ]
+      "visitedPages": []
     },
     "Orange": {
-      "pop": 0,
+      "pop": ,
       "points": 0,
       "visitedPages": []
     },
@@ -18,6 +17,6 @@
     }
   },
   "players": {
-    
+
   }
 }
