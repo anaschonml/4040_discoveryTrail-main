@@ -196,6 +196,55 @@ main {
 .team-row.team-orange .admin-team-name { color: #e67e22; }
 .team-row.team-yellow .admin-team-name { color: #b7950b; }
 
+.team-choice-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  border: 2px solid #ddd;
+}
+
+.team-choice-card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.choice-button,
+.secondary-button {
+  font-family: inherit;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.choice-button {
+  background: #1f5d7a;
+  color: #fff;
+  border-color: #1f5d7a;
+}
+
+.choice-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.join-team-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.join-team-form input {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  font: inherit;
+}
+
 @media (min-width: 480px) {
   .teams {
     flex-direction: row;

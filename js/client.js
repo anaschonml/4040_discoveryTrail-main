@@ -4,11 +4,11 @@ async function fetchTeams() {
   return res.json();
 }
 
-async function joinTeam(teamName) {
+async function joinTeam(payload) {
   const res = await fetch('/api/join', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ playerId: getPlayerId(), teamName }),
+    body: JSON.stringify({ playerId: getPlayerId(), ...payload }),
   });
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));

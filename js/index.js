@@ -1,22 +1,5 @@
 const POLL_INTERVAL_MS = 5000;
 
-function renderTeamButtons(teamsData, container, onJoin) {
-  container.innerHTML = '';
-
-  const divT = document.createElement('div');
-  divT.className = 'teams';
-
-  for (const [name, stats] of Object.entries(teamsData)) {
-    const teamButton = document.createElement('button');
-    teamButton.className = 'team-button team-' + name.toLowerCase();
-    teamButton.innerHTML = `<span class="team-button-name">${name}</span><span class="team-button-pop">${stats.pop} player${stats.pop !== 1 ? 's' : ''}</span>`;
-    teamButton.addEventListener('click', () => onJoin(name, teamButton));
-    divT.appendChild(teamButton);
-  }
-
-  container.appendChild(divT);
-}
-
 function renderJoinedView(container, { team, points, pop }) {
   container.innerHTML = `
     <div class="joined-message">
@@ -28,34 +11,120 @@ function renderJoinedView(container, { team, points, pop }) {
   renderTeamBadge(ensureTeamStatusElement(), { team, points, pop });
 }
 
-async function refreshTeamsUI(container, joinedTeam) {
+function renderChoiceScreen(container) {
+  container.innerHTML = `
+    <div class="team-choice-card">
+      <h2>How do you want to play?</h2>
+      <button class="choice-button" id="play-solo-button">Play solo</button>
+      <button class="choice-button" id="team-options-button">Create or join a team</button>
+    </div>
+  `;
+
+  const soloButton = document.getElementById('play-solo-button');
+  const teamButton = document.getElementById('team-options-button');
+
+  soloButton.addEventListener('click', () => handleSoloStart(container));
+  teamButton.addEventListener('click', () => renderTeamOptionsScreen(container));
+}
+
+function renderTeamOptionsScreen(container) {
+  container.innerHTML = `
+    <div class="team-choice-card">
+      <h2>Create or join a team</h2>
+      <button class="choice-button" id="create-team-button">Create a new team</button>
+      <form id="join-team-form" class="join-team-form">
+        <label for="team-name-input">Join an existing team</label>
+        <input id="team-name-input" name="teamName" type="text" placeholder="Enter team name" required />
+        <button type="submit" class="choice-button">Join a team</button>
+      </form>
+      <button class="secondary-button" id="back-to-selection-button">Back</button>
+    </div>
+  `;
+
+  document.getElementById('create-team-button').addEventListener('click', () => handleCreateTeam(container));
+  document.getElementById('join-team-form').addEventListener('submit', (event) => handleJoinTeam(event, container));
+  document.getElementById('back-to-selection-button').addEventListener('click', () => renderChoiceScreen(container));
+}
+
+async function handleSoloStart(container) {
+  const button = document.getElementById('play-solo-button');
+  if (button) {
+    button.disabled = true;
+  }
+
+  try {
+    const result = await joinTeam({ mode: 'solo' });
+    setTeam(result.team);
+    renderJoinedView(container, result);
+  } catch (err) {
+    console.error(err);
+    if (button) {
+      button.disabled = false;
+    }
+    alert(err.message || 'Failed to start solo play');
+  }
+}
+
+async function handleCreateTeam(container) {
+  const button = document.getElementById('create-team-button');
+  if (button) {
+    button.disabled = true;
+  }
+
+  try {
+    const result = await joinTeam({ mode: 'create' });
+    setTeam(result.team);
+    renderJoinedView(container, result);
+  } catch (err) {
+    console.error(err);
+    if (button) {
+      button.disabled = false;
+    }
+    alert(err.message || 'Failed to create a team');
+  }
+}
+
+async function handleJoinTeam(event, container) {
+  event.preventDefault();
+
+  const input = document.getElementById('team-name-input');
+  const button = document.querySelector('#join-team-form button[type="submit"]');
+  const teamName = input.value.trim();
+
+  if (!teamName) {
+    alert('Please enter the name of the team you want to join.');
+    return;
+  }
+
+  if (button) {
+    button.disabled = true;
+  }
+
+  try {
+    const result = await joinTeam({ mode: 'join', teamName });
+    setTeam(result.team);
+    renderJoinedView(container, result);
+  } catch (err) {
+    console.error(err);
+    if (button) {
+      button.disabled = false;
+    }
+    alert(err.message || 'Failed to join team');
+  }
+}
+
+async function refreshJoinedTeamUI(container, joinedTeam) {
   try {
     const data = await fetchTeams();
-    if (joinedTeam) {
-      const stats = data.teams[joinedTeam];
-      if (stats) {
-        renderJoinedView(container, { team: joinedTeam, points: stats.points, pop: stats.pop });
-      }
+    const stats = data.teams[joinedTeam];
+    if (stats) {
+      renderJoinedView(container, { team: joinedTeam, points: stats.points, pop: stats.pop });
     } else {
-      renderTeamButtons(data.teams, container, handleJoin);
+      renderChoiceScreen(container);
     }
   } catch (err) {
     console.error(err);
     container.innerHTML = '<p class="error">Could not load teams. Please refresh the page.</p>';
-  }
-}
-
-async function handleJoin(teamName, button) {
-  button.disabled = true;
-  try {
-    const result = await joinTeam(teamName);
-    setTeam(result.team);
-    const container = document.getElementById('teams');
-    renderJoinedView(container, result);
-  } catch (err) {
-    console.error(err);
-    button.disabled = false;
-    alert(err.message || 'Failed to join team');
   }
 }
 
@@ -67,10 +136,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const joinedTeam = getTeam();
 
   if (joinedTeam) {
-    await refreshTeamsUI(container, joinedTeam);
+    await refreshJoinedTeamUI(container, joinedTeam);
   } else {
-    await refreshTeamsUI(container, null);
+    renderChoiceScreen(container);
   }
 
-  setInterval(() => refreshTeamsUI(container, getTeam()), POLL_INTERVAL_MS);
+  setInterval(async () => {
+    const currentTeam = getTeam();
+    if (currentTeam) {
+      await refreshJoinedTeamUI(container, currentTeam);
+    }
+  }, POLL_INTERVAL_MS);
 });
