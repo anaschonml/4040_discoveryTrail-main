@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const { createInitialState, assignPlayerToTeam, createRandomTeamName } = require('../lib/state');
+const { createInitialState, assignPlayerToTeam, createRandomTeamName, normalizePageId, isValidPage, getPageIds } = require('../lib/state');
 
 test('assignPlayerToTeam creates a solo team with a five-letter name', () => {
   const state = createInitialState();
@@ -29,4 +29,17 @@ test('assignPlayerToTeam adds a player to an existing team', () => {
 test('createRandomTeamName generates a five-character name', () => {
   const name = createRandomTeamName();
   assert.match(name, /^[A-Za-z]{5}$/);
+});
+
+test('normalizePageId accepts object paths from the /objects/ folder', () => {
+  assert.equal(normalizePageId('/objects/object_example_1.html'), 'object_example_1');
+  assert.equal(normalizePageId('objects/object_example_2.html'), 'object_example_2');
+  assert.equal(normalizePageId('object_example_1'), 'object_example_1');
+  assert.equal(isValidPage('/objects/object_example_1.html'), true);
+  assert.equal(isValidPage('object_example_2.html'), true);
+});
+
+test('getPageIds discovers object pages from the objects folder', () => {
+  const pageIds = getPageIds();
+  assert.deepEqual(pageIds, ['object_example_1', 'object_example_2']);
 });

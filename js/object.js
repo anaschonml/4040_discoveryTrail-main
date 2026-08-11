@@ -1,7 +1,19 @@
+function normalizePageId(pageId) {
+  if (typeof pageId !== 'string') return null;
+
+  const trimmed = pageId.trim();
+  if (!trimmed) return null;
+
+  const withoutHash = trimmed.split('#')[0].split('?')[0];
+  const pathOnly = withoutHash.replace(/^\/+/, '').replace(/\\/g, '/');
+  const basename = pathOnly.split('/').pop() || pathOnly;
+  return basename.replace(/\.html?$/i, '');
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   getPlayerId();
 
-  const pageId = document.body.dataset.pageId;
+  const pageId = normalizePageId(document.body?.dataset?.pageId || window.location.pathname);
   if (!pageId) return;
 
   const team = getTeam();

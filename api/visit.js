@@ -1,12 +1,13 @@
-const { withState, isValidPage } = require('../lib/state');
+const { withState, isValidPage, normalizePageId } = require('../lib/state');
 
 async function visit(req, res) {
   const { playerId, pageId } = req.body || {};
+  const normalizedPageId = normalizePageId(pageId);
 
   if (!playerId || typeof playerId !== 'string') {
     return res.status(400).json({ error: 'playerId is required' });
   }
-  if (!pageId || !isValidPage(pageId)) {
+  if (!normalizedPageId || !isValidPage(normalizedPageId)) {
     return res.status(400).json({ error: 'Invalid page ID' });
   }
 
@@ -19,10 +20,10 @@ async function visit(req, res) {
 
       const teamName = player.team;
       const team = state.teams[teamName];
-      const isNewVisit = !team.visitedPages.includes(pageId);
+      const isNewVisit = !team.visitedPages.includes(normalizedPageId);
 
       if (isNewVisit) {
-        team.visitedPages.push(pageId);
+        team.visitedPages.push(normalizedPageId);
         team.points += 1;
       }
 

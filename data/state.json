@@ -1,26 +1,8 @@
 {
-  "teams":{
-    "LROLZ": {
-      "pop": 0,
-      "points": 0,
-      "visitedPages": [
-
-      ],
-      "members": [
-
-      ]
-    },
-    "ZJGXI": {
-      "pop": 0,
-      "points": 0,
-      "visitedPages": [
-
-      ],
-      "members": [
-      ]
-    }
+  "teams": {
+   
   },
   "players": {
-   
+ 
   }
 }
