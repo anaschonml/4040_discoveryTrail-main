@@ -1,10 +1,16 @@
 const { withState, assignPlayerToTeam } = require('../lib/state');
 
 async function join(req, res) {
-  const { playerId, teamName, mode } = req.body || {};
+  const { playerId, firstName, lastName, teamName, mode } = req.body || {};
 
   if (!playerId || typeof playerId !== 'string') {
     return res.status(400).json({ error: 'playerId is required' });
+  }
+  if (!firstName || typeof firstName !== 'string' || !firstName.trim()) {
+    return res.status(400).json({ error: 'First name is required' });
+  }
+  if (!lastName || typeof lastName !== 'string' || !lastName.trim()) {
+    return res.status(400).json({ error: 'Last name is required' });
   }
 
   const selectedMode = mode || (teamName ? 'join' : undefined);
@@ -17,7 +23,12 @@ async function join(req, res) {
   }
 
   try {
-    const result = await withState((state) => assignPlayerToTeam(state, playerId, { mode: selectedMode, teamName }));
+    const result = await withState((state) => assignPlayerToTeam(state, playerId, {
+      mode: selectedMode,
+      teamName,
+      firstName,
+      lastName,
+    }));
     res.json(result);
   } catch (err) {
     console.error('join error:', err);

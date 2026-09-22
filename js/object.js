@@ -13,7 +13,7 @@ function normalizePageId(pageId) {
 document.addEventListener('DOMContentLoaded', async () => {
   getPlayerId();
 
-  const pageId = normalizePageId(document.body?.dataset?.pageId || window.location.pathname);
+  const pageId = window.location.pathname;
   if (!pageId) return;
 
   const team = getTeam();
@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const result = await recordVisit(pageId);
     setTeam(result.team);
     renderTeamBadge(statusEl, result);
+    if (result.hasWon) {
+      window.location.href = '/win_condition.html';
+    }
   } catch (err) {
     console.error(err);
     if (err.message && err.message.includes('not joined')) {

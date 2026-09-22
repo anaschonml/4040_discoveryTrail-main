@@ -8,6 +8,7 @@ async function teams(req, res) {
       teamsData[name] = {
         pop: team.pop,
         points: team.points,
+        categoryPoints: team.categoryPoints,
       };
     }
     res.json({ teams: teamsData });

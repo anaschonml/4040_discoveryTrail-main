@@ -1,5 +1,6 @@
 const PLAYER_ID_KEY = 'discoveryTrail_playerId';
 const TEAM_KEY = 'discoveryTrail_team';
+const PLAYER_PROFILE_KEY = 'discoveryTrail_playerProfile';
 
 function generateId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -27,4 +28,16 @@ function setTeam(name) {
 
 function clearTeam() {
   localStorage.removeItem(TEAM_KEY);
+}
+
+function getPlayerProfile() {
+  try {
+    return JSON.parse(localStorage.getItem(PLAYER_PROFILE_KEY)) || null;
+  } catch (err) {
+    return null;
+  }
+}
+
+function setPlayerProfile(profile) {
+  localStorage.setItem(PLAYER_PROFILE_KEY, JSON.stringify(profile));
 }

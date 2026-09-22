@@ -19,11 +19,13 @@ function renderTable(teams) {
 
     const visited = team.visitedPages || [];
     const pages = visited.length ? visited.join(', ') : '—';
+    const categoryPoints = team.categoryPoints || {};
+    const points = `beep: ${categoryPoints.beep || 0}, bot: ${categoryPoints.bot || 0}, brave: ${categoryPoints.brave || 0}`;
 
     row.innerHTML = `
       <td class="admin-team-name">${team.name}</td>
       <td>${team.pop}</td>
-      <td>${team.points}</td>
+      <td>${points}<br>Total: ${team.points}</td>
       <td class="admin-pages">${pages}</td>
     `;
     tbody.appendChild(row);

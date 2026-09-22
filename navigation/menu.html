@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+         <meta charset="utf-8" />
+         <title>40+40 Discovery Trail</title>
+         <meta name="description" content="Find Objects and Learn Media Lab History" />
+         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+         <link rel="stylesheet" type="text/css" href="/style.css" />
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <h1>ML40 Discovery Trail</h1>
+            <div id="team-status" class="team-status"></div>
+        </header>
+        <main>
+            <button class="navbutton" onclick="window.location.href='/navigation/waypoint_0/waypoint_0_0.html'">Atrium</button> 
+            <button class="navbutton" onclick="window.location.href='/navigation/waypoint_1/waypoint_1_0.html'">Coat Closet</button>
+            <button class="navbutton" onclick="window.location.href='/navigation/waypoint_2/waypoint_2_0.html'">Elevator</button>
+            <button class="navbutton" onclick="window.location.href='/navigation/waypoint_3/waypoint_3_0.html'">Kitchen</button>
+        </main>
+        <script src="/js/session.js"></script>
+        <script src="/js/client.js"></script>
+        <script src="/js/index.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                const team = getTeam();
+                if (!team) return;
+
+                try {
+                    const data = await fetchTeams();
+                    const stats = data.teams[team];
+                    if (stats) {
+                        renderTeamBadge(ensureTeamStatusElement(), { team, ...stats });
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            });
+        </script>
+    </body>
+</html>

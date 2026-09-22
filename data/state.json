@@ -1,8 +1,29 @@
 {
   "teams": {
-   
+    "KMRFN": {
+      "pop": 1,
+      "points": 3,
+      "categoryPoints": {
+        "beep": 1,
+        "bot": 1,
+        "brave": 1
+      },
+      "visitedPages": [
+        "objects/brave/object_example_2.html",
+        "objects/bot/object_example_2.html",
+        "objects/beep/object_example_1.html"
+      ],
+      "members": [
+        "4228e563-6ebc-432b-8114-8ed3cc9475ba"
+      ]
+    }
   },
   "players": {
- 
+    "4228e563-6ebc-432b-8114-8ed3cc9475ba": {
+      "team": "KMRFN",
+      "firstName": "poo",
+      "lastName": "pee",
+      "joinedAt": "2026-09-22T19:20:06.394Z"
+    }
   }
 }

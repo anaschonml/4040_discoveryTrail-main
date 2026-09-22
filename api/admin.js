@@ -7,6 +7,7 @@ async function adminTeams(req, res) {
       name,
       pop: team.pop,
       points: team.points,
+      categoryPoints: team.categoryPoints,
       visitedPages: team.visitedPages || [],
     }));
     res.json({ teams });

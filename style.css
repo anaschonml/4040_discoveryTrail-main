@@ -105,6 +105,12 @@ main {
   color: #2c3e50;
 }
 
+.team-category-points,
+.joined-category-points {
+  color: #536878;
+  font-size: 0.9rem;
+}
+
 .team-pop {
   color: #666;
 }
@@ -239,6 +245,13 @@ main {
 }
 
 .join-team-form input {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  font: inherit;
+}
+
+#player-name-form input {
   padding: 0.8rem 0.9rem;
   border: 1px solid #ccc;
   border-radius: 0.4rem;

@@ -1,17 +1,57 @@
 const POLL_INTERVAL_MS = 5000;
 
-function renderJoinedView(container, { team, points, pop }) {
+function hasWon(categoryPoints = {}) {
+  return ['beep', 'bot', 'brave'].every((category) => categoryPoints[category] >= 1);
+}
+
+async function redirectIfWinningTeam(teamName) {
+  const data = await fetchTeams();
+  const stats = data.teams[teamName];
+  if (!stats || !hasWon(stats.categoryPoints)) return false;
+
+  window.location.replace('/win_condition.html');
+  return true;
+}
+
+function renderJoinedView(container, { team, points, categoryPoints, pop }) {
+  const categorySummary = categoryPoints
+    ? `beep: ${categoryPoints.beep || 0} · bot: ${categoryPoints.bot || 0} · brave: ${categoryPoints.brave || 0}`
+    : '';
   container.innerHTML = `
     <div class="joined-message">
       <p>You're on <strong>Team ${team}</strong></p>
       <p>${pop} player${pop !== 1 ? 's' : ''} · ${points} point${points !== 1 ? 's' : ''}</p>
+      ${categorySummary ? `<p class="joined-category-points">${categorySummary}</p>` : ''}
       <p class="joined-hint">Scan QR codes around the space to discover objects and earn points for your team.</p>
     </div>
   `;
-  renderTeamBadge(ensureTeamStatusElement(), { team, points, pop });
+  renderTeamBadge(ensureTeamStatusElement(), { team, points, categoryPoints, pop });
 }
 
-function renderChoiceScreen(container) {
+function renderNameScreen(container) {
+  container.innerHTML = `
+    <form id="player-name-form" class="team-choice-card">
+      <h2>Tell us your name</h2>
+      <label for="first-name-input">First name</label>
+      <input id="first-name-input" name="firstName" type="text" autocomplete="given-name" required />
+      <label for="last-name-input">Last name</label>
+      <input id="last-name-input" name="lastName" type="text" autocomplete="family-name" required />
+      <button type="submit" class="choice-button">Continue</button>
+    </form>
+  `;
+
+  document.getElementById('player-name-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const firstName = document.getElementById('first-name-input').value.trim();
+    const lastName = document.getElementById('last-name-input').value.trim();
+    if (!firstName || !lastName) return;
+    const profile = { firstName, lastName };
+    setPlayerProfile(profile);
+    renderChoiceScreen(container, profile);
+  });
+}
+
+function renderChoiceScreen(container, profile) {
   container.innerHTML = `
     <div class="team-choice-card">
       <h2>How do you want to play?</h2>
@@ -23,11 +63,11 @@ function renderChoiceScreen(container) {
   const soloButton = document.getElementById('play-solo-button');
   const teamButton = document.getElementById('team-options-button');
 
-  soloButton.addEventListener('click', () => handleSoloStart(container));
-  teamButton.addEventListener('click', () => renderTeamOptionsScreen(container));
+  soloButton.addEventListener('click', () => handleSoloStart(container, profile));
+  teamButton.addEventListener('click', () => renderTeamOptionsScreen(container, profile));
 }
 
-function renderTeamOptionsScreen(container) {
+function renderTeamOptionsScreen(container, profile) {
   container.innerHTML = `
     <div class="team-choice-card">
       <h2>Create or join a team</h2>
@@ -41,19 +81,19 @@ function renderTeamOptionsScreen(container) {
     </div>
   `;
 
-  document.getElementById('create-team-button').addEventListener('click', () => handleCreateTeam(container));
-  document.getElementById('join-team-form').addEventListener('submit', (event) => handleJoinTeam(event, container));
-  document.getElementById('back-to-selection-button').addEventListener('click', () => renderChoiceScreen(container));
+  document.getElementById('create-team-button').addEventListener('click', () => handleCreateTeam(container, profile));
+  document.getElementById('join-team-form').addEventListener('submit', (event) => handleJoinTeam(event, container, profile));
+  document.getElementById('back-to-selection-button').addEventListener('click', () => renderChoiceScreen(container, profile));
 }
 
-async function handleSoloStart(container) {
+async function handleSoloStart(container, profile) {
   const button = document.getElementById('play-solo-button');
   if (button) {
     button.disabled = true;
   }
 
   try {
-    const result = await joinTeam({ mode: 'solo' });
+    const result = await joinTeam({ ...profile, mode: 'solo' });
     setTeam(result.team);
     renderJoinedView(container, result);
   } catch (err) {
@@ -65,14 +105,14 @@ async function handleSoloStart(container) {
   }
 }
 
-async function handleCreateTeam(container) {
+async function handleCreateTeam(container, profile) {
   const button = document.getElementById('create-team-button');
   if (button) {
     button.disabled = true;
   }
 
   try {
-    const result = await joinTeam({ mode: 'create' });
+    const result = await joinTeam({ ...profile, mode: 'create' });
     setTeam(result.team);
     renderJoinedView(container, result);
   } catch (err) {
@@ -84,7 +124,7 @@ async function handleCreateTeam(container) {
   }
 }
 
-async function handleJoinTeam(event, container) {
+async function handleJoinTeam(event, container, profile) {
   event.preventDefault();
 
   const input = document.getElementById('team-name-input');
@@ -101,7 +141,7 @@ async function handleJoinTeam(event, container) {
   }
 
   try {
-    const result = await joinTeam({ mode: 'join', teamName });
+    const result = await joinTeam({ ...profile, mode: 'join', teamName });
     setTeam(result.team);
     renderJoinedView(container, result);
   } catch (err) {
@@ -118,9 +158,9 @@ async function refreshJoinedTeamUI(container, joinedTeam) {
     const data = await fetchTeams();
     const stats = data.teams[joinedTeam];
     if (stats) {
-      renderJoinedView(container, { team: joinedTeam, points: stats.points, pop: stats.pop });
+      renderJoinedView(container, { team: joinedTeam, points: stats.points, categoryPoints: stats.categoryPoints, pop: stats.pop });
     } else {
-      renderChoiceScreen(container);
+      renderNameScreen(container);
     }
   } catch (err) {
     console.error(err);
@@ -131,14 +171,28 @@ async function refreshJoinedTeamUI(container, joinedTeam) {
 document.addEventListener('DOMContentLoaded', async () => {
   getPlayerId();
   const container = document.getElementById('teams');
-  if (!container) return;
-
   const joinedTeam = getTeam();
+
+  if (!container) {
+    if (joinedTeam) {
+      try {
+        await redirectIfWinningTeam(joinedTeam);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    return;
+  }
 
   if (joinedTeam) {
     await refreshJoinedTeamUI(container, joinedTeam);
   } else {
-    renderChoiceScreen(container);
+    const profile = getPlayerProfile();
+    if (profile && profile.firstName && profile.lastName) {
+      renderChoiceScreen(container, profile);
+    } else {
+      renderNameScreen(container);
+    }
   }
 
   setInterval(async () => {
