@@ -1,11 +1,11 @@
 const express = require('express');
 const path = require('path');
 
-const joinHandler = require('./api/join');
-const visitHandler = require('./api/visit');
-const teamsHandler = require('./api/teams');
-const adminTeamsHandler = require('./api/admin');
-const { getInviteHandler, rsvpHandler, checkAnswerHandler } = require('./api/invite');
+const joinHandler = require('./routes/join');
+const visitHandler = require('./routes/visit');
+const teamsHandler = require('./routes/teams');
+const adminTeamsHandler = require('./routes/admin');
+const { getInviteHandler, rsvpHandler, checkAnswerHandler } = require('./routes/invite');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
