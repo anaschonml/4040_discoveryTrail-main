@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --env-file=.env.local server.js",
-    "db:ping": "node --env-file=.env.local scripts/db-ping.js"
+    "db:ping": "node --env-file=.env.local scripts/db-ping.js",
+    "codes:import": "node --env-file=.env.local scripts/import-codes.js",
+    "invite:create": "node --env-file=.env.local scripts/create-invite.js"
   },
   "dependencies": {
     "express": "^4.21.2",

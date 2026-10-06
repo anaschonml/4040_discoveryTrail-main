@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>You're Invited</title>
+        <meta name="robots" content="noindex" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" type="text/css" href="/style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    </head>
+    <body class="invite-page">
+        <section id="intro" class="intro" hidden>
+            <div class="orbit">
+                <div class="orbit-ring" aria-hidden="true">
+                    <img class="orbit-door" style="--angle: 0deg" src="/img/doors/door1.png" alt="" />
+                    <img class="orbit-door" style="--angle: 90deg" src="/img/doors/door2.png" alt="" />
+                    <img class="orbit-door" style="--angle: 180deg" src="/img/doors/door3.png" alt="" />
+                    <img class="orbit-door" style="--angle: 270deg" src="/img/doors/door4.png" alt="" />
+                </div>
+                <div class="orbit-center">
+                    <p>Congratulations on getting this far. A secret door in the Media Lab is opening just for you. Which one it is, depends on you.</p>
+                    <button id="intro-next" class="chat-send" type="button">Next</button>
+                </div>
+            </div>
+        </section>
+
+        <main id="conversation" hidden>
+            <div id="chat" class="chat" aria-live="polite"></div>
+            <form id="chat-input" class="chat-input" hidden></form>
+        </main>
+
+        <main id="invitation" class="invitation" hidden>
+            <p class="invitation-kicker">You're invited</p>
+            <div id="room" class="room-card"></div>
+        </main>
+
+        <script src="/js/invite.js"></script>
+    </body>
+</html>

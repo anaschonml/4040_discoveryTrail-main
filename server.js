@@ -5,6 +5,7 @@ const joinHandler = require('./api/join');
 const visitHandler = require('./api/visit');
 const teamsHandler = require('./api/teams');
 const adminTeamsHandler = require('./api/admin');
+const { getInviteHandler, rsvpHandler, checkAnswerHandler } = require('./api/invite');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +16,14 @@ app.post('/api/join', joinHandler);
 app.post('/api/visit', visitHandler);
 app.get('/api/teams', teamsHandler);
 app.get('/api/admin/teams', adminTeamsHandler);
+app.get('/api/invite/:token', getInviteHandler);
+app.post('/api/invite/:token/rsvp', rsvpHandler);
+app.post('/api/invite/:token/check', checkAnswerHandler);
+
+// On Vercel, vercel.json rewrites /invite/:token to the same page.
+app.get('/invite/:token', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'invite.html'));
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 

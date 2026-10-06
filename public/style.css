@@ -207,3 +207,203 @@ main {
     min-width: 10rem;
   }
 }
+
+/* Speakeasy invite */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 1rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.chat-bot {
+  align-self: flex-start;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.chat-user {
+  align-self: flex-end;
+  background: #2c3e50;
+  color: #fff;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.chat-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.chat-input[hidden] {
+  display: none;
+}
+
+.chat-text {
+  flex: 1 1 12rem;
+  min-width: 0;
+  padding: 0.75rem;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 0.5rem;
+}
+
+.chat-send,
+.chat-choice {
+  padding: 0.75rem 1.25rem;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 2px solid #2c3e50;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #2c3e50;
+  cursor: pointer;
+}
+
+.chat-send {
+  background: #2c3e50;
+  color: #fff;
+}
+
+.chat-choice {
+  flex: 1 1 6rem;
+}
+
+.chat-input textarea.chat-text {
+  flex-basis: 100%;
+  resize: vertical;
+}
+
+/* Intro: doors orbiting the welcome text */
+
+.intro {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.intro[hidden],
+.invitation[hidden] {
+  display: none;
+}
+
+.orbit {
+  --size: min(100vw - 2rem, 30rem);
+  --door: calc(var(--size) * 0.13);
+  --radius: calc(var(--size) / 2 - var(--door));
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+  animation: orbit-spin 30s linear infinite;
+}
+
+/* Each door is placed on the ring and counter-rotated so it stays upright as the ring turns. */
+.orbit-door {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--door);
+  height: auto;
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(calc(var(--angle) * -1));
+  animation: orbit-upright 30s linear infinite;
+}
+
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-upright {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(calc(var(--angle) * -1));
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(calc(var(--angle) * -1 - 360deg));
+  }
+}
+
+.orbit-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--size) * 0.56);
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.orbit-center p {
+  margin: 0;
+  font-size: clamp(0.85rem, 3.4vw, 1.05rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring,
+  .orbit-door {
+    animation: none;
+  }
+}
+
+/* Invitation */
+
+.invitation-kicker {
+  margin: 1rem 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.invitation-note {
+  margin: 1.25rem 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.room-card {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  border: 2px solid #2c3e50;
+}
+
+.room-card h2 {
+  margin: 0 0 0.75rem;
+}
+
+.room-card dl {
+  margin: 0;
+}
+
+.room-card dt {
+  font-weight: bold;
+  margin-top: 0.75rem;
+}
+
+.room-card dd {
+  margin: 0.25rem 0 0;
+  white-space: pre-wrap;
+}
