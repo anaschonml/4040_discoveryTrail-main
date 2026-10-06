@@ -24,7 +24,7 @@ To reset scores during testing, stop the server and edit or delete `data/state.j
 
 ## Adding object pages
 
-1. Create a new HTML page (e.g. `object_example_3.html`) with `data-page-id="object_example_3"` on the `<body>` tag.
+1. Create a new HTML page in `public/` (e.g. `public/object_example_3.html`) with `data-page-id="object_example_3"` on the `<body>` tag.
 2. Include the shared scripts: `js/session.js`, `js/client.js`, `js/object.js`.
 3. Add the page ID to the allowlist in `lib/state.js` (`PAGE_IDS` array).
 

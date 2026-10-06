@@ -16,8 +16,12 @@ app.post('/api/visit', visitHandler);
 app.get('/api/teams', teamsHandler);
 app.get('/api/admin/teams', adminTeamsHandler);
 
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, () => {
-  console.log(`Discovery Trail server running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Discovery Trail server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
