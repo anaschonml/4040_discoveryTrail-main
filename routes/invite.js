@@ -1,4 +1,5 @@
-const { getInvite, markOpened, saveRsvp, markSmsSent } = require('../lib/invites');
+const { getDb } = require('../lib/db');
+const { getInvite, createInvite, markOpened, saveRsvp, markSmsSent } = require('../lib/invites');
 const { QUESTIONS, validateAnswers, normalizePhone, isCorrectPassword } = require('../lib/questions');
 const { assignRoom } = require('../lib/assign');
 const { getRoom } = require('../lib/rooms');
@@ -77,4 +78,18 @@ async function checkAnswerHandler(req, res) {
   }
 }
 
-module.exports = { getInviteHandler, rsvpHandler, checkAnswerHandler };
+// GET /test
+// Test mode: starts a fresh invite on every visit, so the flow can be tried
+// without a texted link. Only available while TEST_PASSWORD is set.
+async function testInviteHandler(req, res) {
+  if (!process.env.TEST_PASSWORD) return res.status(404).send('Not found');
+  try {
+    const invite = await createInvite(await getDb(), { test: true });
+    res.redirect(302, `/invite/${invite._id}`);
+  } catch (err) {
+    console.error('test invite error:', err);
+    res.status(500).send('Could not start a test invite.');
+  }
+}
+
+module.exports = { getInviteHandler, rsvpHandler, checkAnswerHandler, testInviteHandler };

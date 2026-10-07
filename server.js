@@ -5,7 +5,7 @@ const joinHandler = require('./routes/join');
 const visitHandler = require('./routes/visit');
 const teamsHandler = require('./routes/teams');
 const adminTeamsHandler = require('./routes/admin');
-const { getInviteHandler, rsvpHandler, checkAnswerHandler } = require('./routes/invite');
+const { getInviteHandler, rsvpHandler, checkAnswerHandler, testInviteHandler } = require('./routes/invite');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +19,8 @@ app.get('/api/admin/teams', adminTeamsHandler);
 app.get('/api/invite/:token', getInviteHandler);
 app.post('/api/invite/:token/rsvp', rsvpHandler);
 app.post('/api/invite/:token/check', checkAnswerHandler);
+
+app.get('/test', testInviteHandler);
 
 // On Vercel, vercel.json rewrites /invite/:token to the same page.
 app.get('/invite/:token', (req, res) => {

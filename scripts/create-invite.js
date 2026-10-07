@@ -1,6 +1,7 @@
 // Creates an invite link without Twilio, for testing.
 // Usage: npm run invite:create -- <phone> [code]
 // With a code, it claims that code the same way an incoming text would.
+// Without one, the invite only accepts TEST_PASSWORD.
 const { getClient, getDb } = require('../lib/db');
 const { claimCode, createInvite } = require('../lib/invites');
 
